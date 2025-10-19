@@ -1,0 +1,28 @@
+hole_toolpath_planner_py:
+  ros__parameters:
+    sampling:
+      points: 200000
+      seed: 42
+
+    cylinder:
+      min_diameter: 0.002
+      max_diameter: 0.050
+      distance_threshold: 0.0005
+      ransac_n: 3
+      max_iterations: 2000
+      min_inliers: 200
+
+    surface_circle:
+      into_hint: [0.0, 0.0, 1.0]
+
+    detection:
+      dedupe_center_tol: 0.0005
+      dedupe_diameter_tol: 0.0005
+
+    rviz:
+      marker_ns: "holes"
+      sphere_scale: 0.003
+      axis_length: 0.020
+
+    logging:
+      frame_id: "world"

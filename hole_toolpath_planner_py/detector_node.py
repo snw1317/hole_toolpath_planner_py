@@ -110,10 +110,14 @@ class HoleDetectorPyNode(Node):
             center_tol=float(self.get_parameter("detection.dedupe_center_tol").value),
         )
 
+        summary_lines: list[str] | None = None
         if deduped:
+            summary_lines = [
+                f"Detected {len(deduped)} hole(s) in mesh '{request.mesh_path}':"
+            ]
             for idx, det in enumerate(deduped):
-                self.get_logger().info(
-                    f"  hole[{idx}]: center=({det.center[0]:.4f}, {det.center[1]:.4f}, {det.center[2]:.4f}) m, "
+                summary_lines.append(
+                    f"  [{idx:02d}] center=({det.center[0]:.4f}, {det.center[1]:.4f}, {det.center[2]:.4f}) m, "
                     f"diameter={det.diameter * 1000.0:.3f} mm, length={det.length * 1000.0:.3f} mm"
                 )
 
@@ -126,9 +130,8 @@ class HoleDetectorPyNode(Node):
             self._hole_pub.publish(array)
             markers = self._make_markers(array, stamp)
             self._marker_pub.publish(markers)
-            self.get_logger().info(
-                f"Detected {len(array.holes)} hole(s) in mesh '{request.mesh_path}'"
-            )
+            if summary_lines is not None:
+                self.get_logger().info("\n".join(summary_lines))
         else:
             self.get_logger().warn(f"No holes detected in mesh '{request.mesh_path}'")
 

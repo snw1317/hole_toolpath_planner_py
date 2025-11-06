@@ -150,7 +150,7 @@ class HoleDetectorPyNode(Node):
             hole.header.frame_id = frame_id
             hole.id = idx
             hole.kind = Hole.CYLINDER
-            hole.radius = float(det.diameter)
+            hole.diameter = float(det.diameter)
             hole.length = float(det.length)
 
             x_axis, y_axis, z_axis = orthonormal_frame(det.axis)
@@ -247,7 +247,7 @@ class HoleDetectorPyNode(Node):
             text.color.g = 1.0
             text.color.b = 1.0
             text.color.a = 0.9
-            text.text = f"id={hole.id} ⌀={hole.radius * 1000.0:.1f} mm"
+            text.text = f"id={hole.id} ⌀={hole.diameter * 1000.0:.1f} mm"
             markers.markers.append(text)
 
         return markers
